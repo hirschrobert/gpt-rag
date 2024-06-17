@@ -1,0 +1,88 @@
+.errormessage {
+    color: red;
+}
+
+.message {
+    color: green;
+}
+
+/* chatbot */
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+/* Mobile devices (max-width: 768px) */
+@media only screen and (max-width: 768px) {
+    #chat-container {
+        width: 100%;
+    }
+}
+
+/* Desktop devices (min-width: 769px) */
+@media only screen and (min-width: 769px) {
+    #chat-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
+.message {
+    max-width: 70%;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+form.chat {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+}
+
+#userMessage {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}

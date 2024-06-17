@@ -1,0 +1,24 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <h2>Dashboard</h2>
+    <p>Welcome to the dashboard.</p>
+    <p>Your roles: {{ roles }}</p>
+    {% if 'admin' in roles %}
+    <a href="/manage_users">Manage Users</a>
+    {% endif %}
+    <br>
+    <a href="/chatbot">Chatbot</a>
+    <br>
+    <form method="post" action="/logout">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+
+</html>

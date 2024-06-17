@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Chatbot{% endblock %}
+{% block head %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    async function sendMessage(event) {
+        event.preventDefault(); // Prevent form submission
+        const userMessage = document.getElementById("userMessage").value;
+        const responseDiv = document.getElementById("chat-container");
+
+        const response = await fetch("/chatbot/send_message", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        const data = await response.json();
+
+        if (data.response) {
+            const markdownText = data.response;
+            const html = marked.parse(markdownText);
+            responseDiv.innerHTML = `<div class="message user-message"><strong>You:</strong> ${userMessage}</div>` + responseDiv.innerHTML;
+            responseDiv.innerHTML = `<div class="message bot-message"><strong>Bot:</strong> ${html}</div>` + responseDiv.innerHTML;
+        } else {
+            responseDiv.innerHTML = `<div class="message user-message"><strong>You:</strong> ${userMessage}</div>` + responseDiv.innerHTML;
+            responseDiv.innerHTML = `<div class="message bot-message"><strong>Error:</strong> ${data.error}</div>` + responseDiv.innerHTML;
+        }
+
+        document.getElementById("userMessage").value = "";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputField = document.getElementById("userMessage");
+        inputField.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent form submission
+                sendMessage(event);
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+<h1>Chat with GPT</h1>
+{{ bot_name }}
+<div id="chat-container">
+    {% for message in chat_history|reverse %}
+    {% if message.role == 'user' %}
+    <div class="message user-message">
+        <strong>You:</strong> {{ message.content|safe }}
+    </div>
+    {% elif message.role == 'assistant' %}
+    <div class="message bot-message">
+        <strong>Bot:</strong> {{ message.content|safe }}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<form class="chat" onsubmit="sendMessage(event)">
+    <input type="text" id="userMessage" placeholder="Type your message here" autocomplete="off" />
+    <input type="submit" value="Send">
+</form>
+{% endblock %}
